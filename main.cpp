@@ -19,6 +19,21 @@ std::map<std::string, int> get_header(std::ifstream &input) {
     return result;
 }
 
+std::vector<std::vector<std::string>> get_table(std::ifstream &input) {
+    std::string row;
+    std::vector<std::vector<std::string>> result;
+    while (std::getline(input, row)) {
+        std::vector<std::string> line;
+        std::stringstream ss(row);
+        std::string tmp;
+        while (std::getline(ss, tmp, ',')) {
+            line.push_back(tmp);
+        }
+        result.push_back(line);
+    }
+    return result;
+}
+
 int main(int argc, char **argv) {
     if (argc == 1) {
         std::cout << "No filename provided" << std::endl;
