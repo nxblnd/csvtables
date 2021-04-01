@@ -5,6 +5,16 @@
 #include <string>
 #include <sstream>
 
+std::vector<std::string> split(std::string &string, char delimiter) {
+    std::vector<std::string> result;
+    std::stringstream ss(string);
+    std::string tmp;
+    while (std::getline(ss, tmp, delimiter)) {
+        result.push_back(tmp);
+    }
+    return result;
+}
+
 std::map<std::string, int> get_header(std::ifstream &input) {
     std::string header;
     std::getline(input, header);
@@ -23,13 +33,7 @@ std::vector<std::vector<std::string>> get_table(std::ifstream &input) {
     std::string row;
     std::vector<std::vector<std::string>> result;
     while (std::getline(input, row)) {
-        std::vector<std::string> line;
-        std::stringstream ss(row);
-        std::string tmp;
-        while (std::getline(ss, tmp, ',')) {
-            line.push_back(tmp);
-        }
-        result.push_back(line);
+        result.push_back(split(row, ','));
     }
     return result;
 }
