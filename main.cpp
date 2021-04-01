@@ -19,12 +19,10 @@ std::map<std::string, int> get_header(std::ifstream &input) {
     std::string header;
     std::getline(input, header);
 
-    std::stringstream ss(header);
-    int index = 0;
-    std::string tmp;
     std::map<std::string, int> result;
-    while (std::getline(ss, tmp, ',')) {
-        result.insert(std::make_pair(tmp, index++));
+    int index = 0;
+    for (const std::string& title: split(header, ',')) {
+        result.insert(std::make_pair(title, index++));
     }
     return result;
 }
