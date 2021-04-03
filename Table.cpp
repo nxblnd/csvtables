@@ -1,5 +1,6 @@
 #include <fstream>
 #include <sstream>
+#include <iostream>
 #include "Table.h"
 
 Table::Table(std::ifstream &input) {
@@ -29,4 +30,20 @@ void Table::read_body(std::ifstream &input) {
     while (std::getline(input, row)) {
         body.push_back(split(row, ','));
     }
+}
+
+std::ostream& operator<<(std::ostream &os, const Table &table){
+    for (auto column = table.header.cbegin(); column != table.header.cend() - 1; column++) {
+        os << *column << ",";
+    }
+    os << table.header.back();
+    os << std::endl;
+    for (const auto& row: table.body) {
+        for (auto cell = row.cbegin(); cell != row.cend() - 1; cell++) {
+            os << *cell << ",";
+        }
+        os << row.back();
+        os << std::endl;
+    }
+    return os;
 }

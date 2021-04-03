@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <numeric>
 
 class Table {
 private:
@@ -15,9 +16,7 @@ private:
     void read_body(std::ifstream &input);
 public:
     explicit Table(std::ifstream &input);
-
-    void print();
+    friend std::ostream& operator<<(std::ostream &os, const Table &table);
 };
-
 
 #endif //CSVTABLES_TABLE_H
