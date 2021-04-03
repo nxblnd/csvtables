@@ -21,10 +21,7 @@ void Table::read_header(std::ifstream &input) {
     std::string header_string;
     std::getline(input, header_string);
 
-    int index = 0;
-    for (const std::string& title: split(header_string, ',')) {
-        header.insert(std::make_pair(title, index++));
-    }
+    header = split(header_string, ',');
 }
 
 void Table::read_body(std::ifstream &input) {

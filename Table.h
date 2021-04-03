@@ -8,13 +8,15 @@
 
 class Table {
 private:
-    std::map<std::string, int> header;
+    std::vector<std::string> header;
     std::vector<std::vector<std::string>> body;
 
     void read_header(std::ifstream &input);
     void read_body(std::ifstream &input);
 public:
     explicit Table(std::ifstream &input);
+
+    void print();
 };
 
 
