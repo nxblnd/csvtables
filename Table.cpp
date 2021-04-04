@@ -59,10 +59,10 @@ bool is_formula(std::string &string) {
 }
 
 void Table::find_formulas() {
-    for (const auto& row: body) {
-        for (auto cell: row) {
-            if (is_formula(cell))
-                formula_queue.push(Formula(cell));
+    for (int row = 0; row < body.size(); row++) {
+        for (int column = 0; column < body[row].size(); column++) {
+            if (is_formula(body[row][column]))
+                formula_queue.push(Formula(body[row][column], row, column));
         }
     }
 }
