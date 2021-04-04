@@ -24,12 +24,17 @@ void Table::read_header(std::ifstream &input) {
     std::getline(input, header_string);
 
     header = split(header_string, ',');
+    int index = 0;
+    for (const auto& title: header) {
+        header_index.insert(make_pair(title, index++));
+    }
 }
 
 void Table::read_body(std::ifstream &input) {
     std::string row;
     while (std::getline(input, row)) {
         body.push_back(split(row, ','));
+        body_index.insert(make_pair(body.back()[0], body.size() - 1));
     }
 }
 

@@ -12,7 +12,9 @@
 class Table {
 private:
     std::vector<std::string> header;
+    std::map<std::string, int> header_index;
     std::vector<std::vector<std::string>> body;
+    std::map<std::string, int> body_index;
     std::queue<Formula> formula_queue;
 
     void read_header(std::ifstream &input);
