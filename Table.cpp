@@ -6,6 +6,7 @@
 Table::Table(std::ifstream &input) {
     read_header(input);
     read_body(input);
+    find_formulas();
 }
 
 std::vector<std::string> split(std::string &string, char delimiter) {
@@ -46,4 +47,18 @@ std::ostream& operator<<(std::ostream &os, const Table &table){
         os << std::endl;
     }
     return os;
+}
+
+bool is_formula(std::string &string) {
+    return string[0] == '=';
+}
+
+void Table::find_formulas() {
+    for (int row = 0; row < body.size(); row++) {
+        for (int column = 0; column < body[row].size(); column++) {
+            if (is_formula(body[row][column])) {
+                formula_queue.push(formula{row, column, body[row][column]});
+            }
+        }
+    }
 }
