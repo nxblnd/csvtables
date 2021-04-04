@@ -1,6 +1,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <regex>
 #include "Table.h"
 
 Table::Table(std::ifstream &input) {
@@ -67,8 +68,50 @@ void Table::find_formulas() {
     }
 }
 
+std::string Table::get_cell_value(const std::string &cell) {
+    std::smatch match;
+
+    std::regex column_pattern("[A-Za-z]+");
+    std::regex_search(cell, match, column_pattern);
+    int column_id = header_index[match[0]];
+
+    std::regex row_pattern("[0-9]+");
+    std::regex_search(cell, match, row_pattern);
+    int row_id = body_index[match[0]];
+
+    return body[row_id][column_id];
+}
+
 void Table::calculate_formulas() {
     while (!formula_queue.empty()) {
-        ;
+        Formula current = formula_queue.front();
+        int arg1, arg2;
+        try {
+            arg1 = std::stoi(get_cell_value(current.getArg1()));
+            arg2 = std::stoi(get_cell_value(current.getArg2()));
+        } catch (const std::invalid_argument &e) {
+            formula_queue.push(current);
+            formula_queue.pop();
+            continue;
+        }
+        int row = current.getRow();
+        int column = current.getColumn();
+        switch (current.getOp()) {
+            case '+':
+                body[row][column] = std::to_string(arg1 + arg2);
+                break;
+            case '-':
+                body[row][column] = std::to_string(arg1 - arg2);
+                break;
+            case '*':
+                body[row][column] = std::to_string(arg1 * arg2);
+                break;
+            case '/':
+                body[row][column] = std::to_string(arg1 / arg2);
+                break;
+            default:
+                break;
+        }
+        formula_queue.pop();
     }
 }

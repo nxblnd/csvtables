@@ -9,6 +9,11 @@
 #include <queue>
 #include "Formula.h"
 
+struct cell {
+    std::string row;
+    std::string column;
+};
+
 class Table {
 private:
     std::vector<std::string> header;
@@ -25,6 +30,7 @@ public:
     friend std::ostream& operator<<(std::ostream &os, const Table &table);
 
     void calculate_formulas();
+    std::string get_cell_value(const std::string &cell);
 };
 
 #endif //CSVTABLES_TABLE_H
