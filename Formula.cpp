@@ -20,3 +20,23 @@ Formula::Formula(std::string &string, int row, int column) {
     std::regex_search(string, operation, op_pattern);
     op = std::string(operation[0])[0];
 }
+
+const std::string &Formula::getArg1() const {
+    return arg1;
+}
+
+const std::string &Formula::getArg2() const {
+    return arg2;
+}
+
+char Formula::getOp() const {
+    return op;
+}
+
+int Formula::getRow() const {
+    return row;
+}
+
+int Formula::getColumn() const {
+    return column;
+}
