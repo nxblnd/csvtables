@@ -1,7 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <map>
-#include <vector>
 #include <string>
 #include "Table.h"
 
@@ -11,6 +9,11 @@ int main(int argc, char **argv) {
         return 1;
     }
     std::ifstream input(argv[1]);
+
+    Table t(input);
+    t.calculate_formulas();
+
+    std::cout << t << std::endl;
 
     return 0;
 }
