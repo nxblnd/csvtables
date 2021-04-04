@@ -10,7 +10,7 @@ Table::Table(std::ifstream &input) {
 
 std::vector<std::string> split(std::string &string, char delimiter) {
     std::vector<std::string> result;
-    std::stringstream ss(string);
+    std::stringstream ss(string + ","); // This allows to handle empty cells in the end of the line
     std::string tmp;
     while (std::getline(ss, tmp, delimiter)) {
         result.push_back(tmp);
