@@ -1,7 +1,10 @@
 #include <regex>
 #include "Formula.h"
 
-Formula::Formula(std::string &string) {
+Formula::Formula(std::string &string, int row, int column) {
+    this->row = row;
+    this->column = column;
+
     std::regex validation_pattern(R"(=\s*([A-Za-z]+[0-9]+)\s*([\+\-\*\\])\s*([A-Za-z]+[0-9]+)\s*)");
     if (!std::regex_match(string, validation_pattern)) {
         throw std::runtime_error("Formula \"" + string + "\" is invalid");
