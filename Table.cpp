@@ -25,7 +25,7 @@ void Table::read_header(std::ifstream &input) {
     header = split(header_string, ',');
 
     if (!std::all_of(header.begin() + 1, header.end(), [](std::string &title){
-        return std::regex_match(title, std::regex("[A-Za-z]+"));
+        return std::regex_match(title, std::regex("\\s*[A-Za-z]+\\s*"));
     })) {
         throw std::runtime_error("Malformed header line");
     }
@@ -43,7 +43,7 @@ void Table::read_body(std::ifstream &input) {
         body.push_back(split(row, ','));
         body_index.insert(make_pair(body.back()[0], body.size() - 1));
 
-        if (!std::regex_match(body.back()[0], std::regex("\\d+"))) {
+        if (!std::regex_match(body.back()[0], std::regex("\\s*\\d+\\s*"))) {
             throw std::runtime_error("Malformed row number");
         }
     }
