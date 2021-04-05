@@ -43,6 +43,11 @@ void Table::read_body(std::ifstream &input) {
             throw std::runtime_error("Malformed row number");
         }
     }
+    if (!std::all_of(body.begin(), body.end(), [this](std::vector<std::string> &row){
+        return row.size() == body[0].size();
+    }) || header.size() != body[0].size()) {
+        throw std::runtime_error("Not all rows have same size");
+    }
 }
 
 std::ostream& operator<<(std::ostream &os, const Table &table){
