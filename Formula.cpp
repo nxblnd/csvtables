@@ -5,7 +5,7 @@ Formula::Formula(const std::string &string, const int row, const int column) {
     this->row = row;
     this->column = column;
 
-    std::regex validation_pattern(R"(=\s*([A-Za-z]+\d+|\d+)\s*([\+\-\*\\])\s*([A-Za-z]+\d+|\d+)\s*)");
+    std::regex validation_pattern(R"(=\s*([A-Za-z]+\d+|\d+)\s*([\+\-\*\/])\s*([A-Za-z]+\d+|\d+)\s*)");
     if (!std::regex_match(string, validation_pattern)) {
         throw std::runtime_error("Formula \"" + string + "\" is invalid");
     }
@@ -15,7 +15,7 @@ Formula::Formula(const std::string &string, const int row, const int column) {
     arg1 = args++->str();
     arg2 = args->str();
 
-    std::regex op_pattern(R"([\+\-\*\\])");
+    std::regex op_pattern(R"([\+\-\*\/])");
     std::smatch operation;
     std::regex_search(string, operation, op_pattern);
     op = std::string(operation[0])[0];
