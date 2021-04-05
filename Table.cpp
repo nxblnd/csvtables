@@ -23,11 +23,13 @@ void Table::read_header(std::ifstream &input) {
     std::getline(input, header_string);
 
     header = split(header_string, ',');
+
     if (!std::all_of(header.begin() + 1, header.end(), [](std::string &title){
         return std::regex_match(title, std::regex("[A-Za-z]+"));
     })) {
         throw std::runtime_error("Malformed header line");
     }
+
     int index = 0;
     for (const auto& title: header) {
         header_index.insert(make_pair(title, index++));
@@ -36,13 +38,16 @@ void Table::read_header(std::ifstream &input) {
 
 void Table::read_body(std::ifstream &input) {
     std::string row;
+
     while (std::getline(input, row)) {
         body.push_back(split(row, ','));
         body_index.insert(make_pair(body.back()[0], body.size() - 1));
+
         if (!std::regex_match(body.back()[0], std::regex("\\d+"))) {
             throw std::runtime_error("Malformed row number");
         }
     }
+
     if (!std::all_of(body.begin(), body.end(), [this](std::vector<std::string> &row){
         return row.size() == body[0].size();
     }) || header.size() != body[0].size()) {
