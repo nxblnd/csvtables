@@ -68,16 +68,23 @@ void Table::find_formulas() {
     }
 }
 
-std::string Table::get_cell_value(const std::string &cell) {
+int Table::get_column_from_address(const std::string &address) {
     std::smatch match;
-
     std::regex column_pattern("[A-Za-z]+");
-    std::regex_search(cell, match, column_pattern);
-    int column_id = header_index[match[0]];
+    std::regex_search(address, match, column_pattern);
+    return header_index[match[0]];
+}
 
+int Table::get_row_from_address(const std::string &address) {
+    std::smatch match;
     std::regex row_pattern("[0-9]+");
-    std::regex_search(cell, match, row_pattern);
-    int row_id = body_index[match[0]];
+    std::regex_search(address, match, row_pattern);
+    return body_index[match[0]];
+}
+
+std::string Table::get_cell_value(const std::string &cell) {
+    int column_id = get_column_from_address(cell);
+    int row_id = get_row_from_address(cell);
 
     return body[row_id][column_id];
 }
