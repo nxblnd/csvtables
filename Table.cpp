@@ -147,6 +147,8 @@ int Table::calculate_formula(const Formula &formula) {
             answer = arg1 * arg2;
             break;
         case '/':
+            if (arg2 == 0)
+                throw std::runtime_error("Division by zero occurred");
             answer = arg1 / arg2;
             break;
         default:
