@@ -119,6 +119,11 @@ int Table::eval_argument(const std::string &argument) {
 }
 
 int Table::calculate_formula(const Formula &formula) {
+    std::string address = header[formula.get_column()] + body[formula.get_row()][0];
+    if (!current_formulas.insert(address).second) {
+        throw std::runtime_error("Cyclic formulas detected");
+    }
+
     int arg1 = eval_argument(formula.get_arg1());
     int arg2 = eval_argument(formula.get_arg2());
     int answer = 0;
@@ -141,5 +146,6 @@ int Table::calculate_formula(const Formula &formula) {
     }
 
     body[formula.get_row()][formula.get_column()] = std::to_string(answer);
+    current_formulas.erase(address);
     return answer;
 }

@@ -7,6 +7,7 @@
 #include <vector>
 #include <numeric>
 #include <queue>
+#include <set>
 #include "Formula.h"
 
 class Table {
@@ -15,6 +16,7 @@ private:
     std::map<std::string, int> header_index;
     std::vector<std::vector<std::string>> body;
     std::map<std::string, int> body_index;
+    std::set<std::string> current_formulas;
 
     void read_header(std::ifstream &input);
     void read_body(std::ifstream &input);
