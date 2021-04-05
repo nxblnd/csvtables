@@ -1,5 +1,4 @@
 #include <fstream>
-#include <sstream>
 #include <iostream>
 #include <regex>
 #include "Table.h"
@@ -61,10 +60,8 @@ bool is_formula(const std::string &string) {
 void Table::apply_formulas() {
     for (int row = 0; row < body.size(); row++) {
         for (int column = 0; column < body[row].size(); column++) {
-            if (is_formula(body[row][column])) {
-                Formula f(body[row][column], row, column);
-                calculate_formula(f);
-            }
+            if (is_formula(body[row][column]))
+                calculate_formula(Formula(body[row][column], row, column));
         }
     }
 }
@@ -90,7 +87,7 @@ std::string Table::get_cell_value(const std::string &cell) {
     return body[row_id][column_id];
 }
 
-bool convertible(std::string &string) {
+bool convertible(const std::string &string) {
     try {
         std::stoi(string);
         return true;
@@ -99,7 +96,7 @@ bool convertible(std::string &string) {
     }
 }
 
-int Table::eval_argument(std::string &argument) {
+int Table::eval_argument(const std::string &argument) {
 
     if (convertible(argument)) {
         return std::stoi(argument);
@@ -107,9 +104,9 @@ int Table::eval_argument(std::string &argument) {
 
     std::string next_cell = get_cell_value(argument);
     if (is_formula(next_cell)) {
-        auto formula = get_cell_value(argument);
-        Formula f(formula, get_row_from_address(argument), get_column_from_address(argument));
-        return calculate_formula(f);
+        return calculate_formula(Formula(get_cell_value(argument),
+                                         get_row_from_address(argument),
+                                         get_column_from_address(argument)));
     }
     else if (convertible(next_cell)) {
         return std::stoi(next_cell);
@@ -119,9 +116,9 @@ int Table::eval_argument(std::string &argument) {
     }
 }
 
-int Table::calculate_formula(Formula &formula) {
-    auto a1 = formula.getArg1(), a2 = formula.getArg2();
-    int arg1 = eval_argument(a1), arg2 = eval_argument(a2);
+int Table::calculate_formula(const Formula &formula) {
+    int arg1 = eval_argument(formula.getArg1());
+    int arg2 = eval_argument(formula.getArg2());
 
     int row = formula.getRow(), column = formula.getColumn();
     int answer = 0;

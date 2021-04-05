@@ -1,7 +1,7 @@
 #include <regex>
 #include "Formula.h"
 
-Formula::Formula(std::string &string, int row, int column) {
+Formula::Formula(const std::string &string, const int row, const int column) {
     this->row = row;
     this->column = column;
 

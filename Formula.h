@@ -12,7 +12,7 @@ private:
     int row;
     int column;
 public:
-    explicit Formula(std::string &string, int row, int column);
+    explicit Formula(const std::string &string, int row, int column);
 
     const std::string &getArg1() const;
     const std::string &getArg2() const;
