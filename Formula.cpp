@@ -21,22 +21,22 @@ Formula::Formula(const std::string &string, const int row, const int column) {
     op = std::string(operation[0])[0];
 }
 
-const std::string &Formula::getArg1() const {
+const std::string &Formula::get_arg1() const {
     return arg1;
 }
 
-const std::string &Formula::getArg2() const {
+const std::string &Formula::get_arg2() const {
     return arg2;
 }
 
-char Formula::getOp() const {
+char Formula::get_op() const {
     return op;
 }
 
-int Formula::getRow() const {
+int Formula::get_row() const {
     return row;
 }
 
-int Formula::getColumn() const {
+int Formula::get_column() const {
     return column;
 }

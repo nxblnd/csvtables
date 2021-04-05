@@ -14,11 +14,11 @@ private:
 public:
     explicit Formula(const std::string &string, int row, int column);
 
-    const std::string &getArg1() const;
-    const std::string &getArg2() const;
-    char getOp() const;
-    int getRow() const;
-    int getColumn() const;
+    const std::string &get_arg1() const;
+    const std::string &get_arg2() const;
+    char get_op() const;
+    int get_row() const;
+    int get_column() const;
 };
 
 
