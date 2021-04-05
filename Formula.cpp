@@ -10,7 +10,7 @@ Formula::Formula(const std::string &string, const int row, const int column) {
         throw std::runtime_error("Formula \"" + string + "\" is invalid");
     }
 
-    std::regex arg_pattern("[A-Za-z]+[0-9]+");
+    std::regex arg_pattern(R"([A-Za-z]+\d+|\d+)");
     std::sregex_iterator args(string.begin(), string.end(), arg_pattern);
     arg1 = args++->str();
     arg2 = args->str();
