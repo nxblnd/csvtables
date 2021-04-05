@@ -9,11 +9,6 @@
 #include <queue>
 #include "Formula.h"
 
-struct cell {
-    std::string row;
-    std::string column;
-};
-
 class Table {
 private:
     std::vector<std::string> header;
