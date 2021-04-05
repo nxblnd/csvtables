@@ -7,7 +7,6 @@
 Table::Table(std::ifstream &input) {
     read_header(input);
     read_body(input);
-    find_formulas();
 }
 
 std::vector<std::string> split(std::string &string, char delimiter) {
@@ -59,11 +58,13 @@ bool is_formula(const std::string &string) {
     return string[0] == '=';
 }
 
-void Table::find_formulas() {
+void Table::apply_formulas() {
     for (int row = 0; row < body.size(); row++) {
         for (int column = 0; column < body[row].size(); column++) {
-            if (is_formula(body[row][column]))
-                formula_queue.push(Formula(body[row][column], row, column));
+            if (is_formula(body[row][column])) {
+                Formula f(body[row][column], row, column);
+                calculate_formula(f);
+            }
         }
     }
 }
@@ -89,36 +90,57 @@ std::string Table::get_cell_value(const std::string &cell) {
     return body[row_id][column_id];
 }
 
-void Table::calculate_formulas() {
-    while (!formula_queue.empty()) {
-        Formula current = formula_queue.front();
-        int arg1, arg2;
-        try {
-            arg1 = std::stoi(get_cell_value(current.getArg1()));
-            arg2 = std::stoi(get_cell_value(current.getArg2()));
-        } catch (const std::invalid_argument &e) {
-            formula_queue.push(current);
-            formula_queue.pop();
-            continue;
-        }
-        int row = current.getRow();
-        int column = current.getColumn();
-        switch (current.getOp()) {
-            case '+':
-                body[row][column] = std::to_string(arg1 + arg2);
-                break;
-            case '-':
-                body[row][column] = std::to_string(arg1 - arg2);
-                break;
-            case '*':
-                body[row][column] = std::to_string(arg1 * arg2);
-                break;
-            case '/':
-                body[row][column] = std::to_string(arg1 / arg2);
-                break;
-            default:
-                break;
-        }
-        formula_queue.pop();
+bool convertible(std::string &string) {
+    try {
+        std::stoi(string);
+        return true;
+    } catch (const std::invalid_argument &e) {
+        return false;
     }
+}
+
+int Table::eval_argument(std::string &argument) {
+
+    if (convertible(argument)) {
+        return std::stoi(argument);
+    }
+
+    std::string next_cell = get_cell_value(argument);
+    if (is_formula(next_cell)) {
+        auto formula = get_cell_value(argument);
+        Formula f(formula, get_row_from_address(argument), get_column_from_address(argument));
+        return calculate_formula(f);
+    }
+    else if (convertible(next_cell)) {
+        return std::stoi(next_cell);
+    }
+    else {
+        throw std::runtime_error("Can't understand this argument: " + argument);
+    }
+}
+
+int Table::calculate_formula(Formula &formula) {
+    auto a1 = formula.getArg1(), a2 = formula.getArg2();
+    int arg1 = eval_argument(a1), arg2 = eval_argument(a2);
+
+    int row = formula.getRow(), column = formula.getColumn();
+    int answer = 0;
+    switch (formula.getOp()) {
+        case '+':
+            answer = arg1 + arg2;
+            break;
+        case '-':
+            answer = arg1 - arg2;
+            break;
+        case '*':
+            answer = arg1 * arg2;
+            break;
+        case '/':
+            answer = arg1 / arg2;
+            break;
+        default:
+            break;
+    }
+    body[row][column] = std::to_string(answer);
+    return answer;
 }

@@ -24,15 +24,17 @@ private:
 
     void read_header(std::ifstream &input);
     void read_body(std::ifstream &input);
-    void find_formulas();
+
     int get_column_from_address(const std::string &address);
     int get_row_from_address(const std::string &address);
+    std::string get_cell_value(const std::string &cell);
+    int eval_argument(std::string &argument);
+    int calculate_formula(Formula &formula);
 public:
     explicit Table(std::ifstream &input);
     friend std::ostream& operator<<(std::ostream &os, const Table &table);
 
-    void calculate_formula(Formula &formula);
-    std::string get_cell_value(const std::string &cell);
+    void apply_formulas();
 };
 
 #endif //CSVTABLES_TABLE_H
