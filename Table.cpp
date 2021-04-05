@@ -93,14 +93,26 @@ int Table::get_column_from_address(const std::string &address) {
     std::smatch match;
     std::regex column_pattern("[A-Za-z]+");
     std::regex_search(address, match, column_pattern);
-    return header_index[match[0]];
+    auto result = header_index.find(match[0]);
+    if (result != header_index.end()) {
+        return result->second;
+    }
+    else {
+        throw std::runtime_error("Reference to non-existing column");
+    }
 }
 
 int Table::get_row_from_address(const std::string &address) {
     std::smatch match;
     std::regex row_pattern("[0-9]+");
     std::regex_search(address, match, row_pattern);
-    return body_index[match[0]];
+    auto result = body_index.find(match[0]);
+    if (result != body_index.end()) {
+        return result->second;
+    }
+    else {
+        throw std::runtime_error("Reference to non-existing row");
+    }
 }
 
 std::string Table::get_cell_value(const std::string &cell) {
