@@ -55,7 +55,7 @@ std::ostream& operator<<(std::ostream &os, const Table &table){
     return os;
 }
 
-bool is_formula(std::string &string) {
+bool is_formula(const std::string &string) {
     return string[0] == '=';
 }
 
