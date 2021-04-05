@@ -57,6 +57,11 @@ bool is_formula(const std::string &string) {
     return string[0] == '=';
 }
 
+bool is_address(const std::string &string) {
+    std::regex address_pattern(R"([A-Za-z]+\d+)");
+    return std::regex_match(string, address_pattern);
+}
+
 void Table::apply_formulas() {
     for (int row = 0; row < body.size(); row++) {
         for (int column = 0; column < body[row].size(); column++) {
@@ -97,22 +102,19 @@ bool convertible(const std::string &string) {
 }
 
 int Table::eval_argument(const std::string &argument) {
-
     if (convertible(argument)) {
         return std::stoi(argument);
     }
-
-    std::string next_cell = get_cell_value(argument);
-    if (is_formula(next_cell)) {
-        return calculate_formula(Formula(get_cell_value(argument),
+    else if (is_formula(argument)) {
+        return calculate_formula(Formula(argument,
                                          get_row_from_address(argument),
                                          get_column_from_address(argument)));
     }
-    else if (convertible(next_cell)) {
-        return std::stoi(next_cell);
+    else if (is_address(argument)) {
+        return eval_argument(get_cell_value(argument));
     }
     else {
-        throw std::runtime_error("Can't understand this argument: " + argument);
+        throw std::runtime_error("Can't understand this argument: \"" + argument + "\"");
     }
 }
 
