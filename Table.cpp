@@ -8,7 +8,7 @@ Table::Table(std::ifstream &input) {
     read_body(input);
 }
 
-std::vector<std::string> split(std::string &string, char delimiter) {
+std::vector<std::string> Table::split(std::string &string, char delimiter) {
     std::vector<std::string> result;
     std::stringstream ss(string + ","); // This allows to handle empty cells in the end of the line
     std::string tmp;
@@ -53,11 +53,11 @@ std::ostream& operator<<(std::ostream &os, const Table &table){
     return os;
 }
 
-bool is_formula(const std::string &string) {
+bool Table::is_formula(const std::string &string) {
     return string[0] == '=';
 }
 
-bool is_address(const std::string &string) {
+bool Table::is_address(const std::string &string) {
     std::regex address_pattern(R"([A-Za-z]+\d+)");
     return std::regex_match(string, address_pattern);
 }
@@ -92,7 +92,7 @@ std::string Table::get_cell_value(const std::string &cell) {
     return body[row_id][column_id];
 }
 
-bool convertible(const std::string &string) {
+bool Table::convertible(const std::string &string) {
     try {
         std::stoi(string);
         return true;

@@ -34,6 +34,11 @@ public:
     friend std::ostream& operator<<(std::ostream &os, const Table &table);
 
     void apply_formulas();
+
+    static std::vector<std::string> split(std::string &string, char delimiter);
+    static bool is_formula(const std::string &string);
+    static bool is_address(const std::string &string);
+    static bool convertible(const std::string &string);
 };
 
 #endif //CSVTABLES_TABLE_H
