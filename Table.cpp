@@ -121,9 +121,8 @@ int Table::eval_argument(const std::string &argument) {
 int Table::calculate_formula(const Formula &formula) {
     int arg1 = eval_argument(formula.getArg1());
     int arg2 = eval_argument(formula.getArg2());
-
-    int row = formula.getRow(), column = formula.getColumn();
     int answer = 0;
+
     switch (formula.getOp()) {
         case '+':
             answer = arg1 + arg2;
@@ -140,6 +139,7 @@ int Table::calculate_formula(const Formula &formula) {
         default:
             break;
     }
-    body[row][column] = std::to_string(answer);
+
+    body[formula.getRow()][formula.getColumn()] = std::to_string(answer);
     return answer;
 }
